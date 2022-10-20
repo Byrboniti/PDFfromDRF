@@ -3,7 +3,7 @@ import io
 from django.shortcuts import render
 from rest_framework import generics
 from .models import File
-from .serializer import FilepdfAPISerializer, UploadSerializer
+from .serializer import FilepdfAPISerializer
 
 from rest_framework import generics
 # from django.http import HttpResponse
@@ -21,38 +21,39 @@ from drf_pdf.response import PDFFileResponse
 from drf_pdf.renderer import PDFRenderer
 # from django.http import FileResponse
 # from my_pdf_package import PDFGenerator
+from docxtpl import DocxTemplate, InlineImage
+import datetime as dt
+from docx2pdf import convert
+from django.forms.models import model_to_dict
 
-'''# from fpdf import FPDF
+class DocxHandler(APIView):
+    def get(self,*args,**kwargs):
+        doc = DocxTemplate("inviteTmpl.docx")
+        context = File.objects.get(id=1)
+        u_context = model_to_dict(context)
 
-
-# class PDF(FPDF):
-# 
-#     def lines(self):
-#         pdf_w = 210
-#         pdf_h = 297
-#         self.set_line_width(0.0)
-#         self.line(0, pdf_h / 2, 210, pdf_h / 2)
-'''
+        print(u_context)
+        doc.render(u_context)
 
 
 
-class PDFHandler(APIView):
-
-    renderer_classes = (PDFRenderer, )
-
-    def get(self, request):
-
-        pdf = pdfkit.from_file(???,'foo.pdf')
-        headers = {
-            'Content-Disposition': 'filename="foo.pdf"',
-            # 'Content-Length': len(pdf),
-        }
-
-        return Response(
-            pdf,
-            headers=headers,
-            status=status.HTTP_200_OK
-        )
+# class PDFHandler(APIView):
+#
+#     renderer_classes = (PDFRenderer, )
+#
+#     def get(self, request):
+#
+#         pdf = pdfkit.from_file(???,'foo.pdf')
+#         headers = {
+#             'Content-Disposition': 'filename="foo.pdf"',
+#             # 'Content-Length': len(pdf),
+#         }
+#
+#         return Response(
+#             pdf,
+#             headers=headers,
+#             status=status.HTTP_200_OK
+#         )
 
 class FilepdfAPIView(generics.ListAPIView):
     queryset = File.objects.all()

@@ -9,7 +9,7 @@ class FilepdfAPISerializer(serializers.ModelSerializer):
         fields = ('name','text')
 
 
-class UploadSerializer(Serializer):
-    file_uploaded = FileField()
-    class Meta:
-        fields = ['file_uploaded']
+# class UploadSerializer(Serializer):
+#     file_uploaded = FileField()
+#     class Meta:
+#         fields = ['file_uploaded']
