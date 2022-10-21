@@ -14,26 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 from autores.views import FilepdfAPIView,DocxHandler
-from rest_framework import routers
 
-# router = routers.DefaultRouter()
-# router.register(r'upload', UploadViewSet, basename="upload")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/file/',FilepdfAPIView.as_view()),
-    # path('', include(router.urls)),
-    # path('api/v1/download/', PDFHandler.as_view()),
     path('api/v1/download/',DocxHandler.as_view()),
-
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # path('download/<int:id>/',FileDownloadListAPIView.as_view()),
 ]
